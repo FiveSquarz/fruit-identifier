@@ -5,7 +5,7 @@ import VueWordCloud from 'vuewordcloud';
 import { Cropper } from 'vue-advanced-cropper';
 import 'vue-advanced-cropper/dist/style.css';
 import { inferenceModel } from './utils/predict';
-import { min, update } from 'lodash';
+import { min } from 'lodash';
 
 const image = ref<string>("./demo_fruits.jpg")
 const cropperRef = ref<InstanceType<typeof Cropper> | null>(null);
@@ -54,7 +54,7 @@ async function confirmCrop() {
   if (cropperRef.value) {
     const result = cropperRef.value.getResult();
     //console.time('Inference time');
-    const [p, t] = await inferenceModel(result.canvas!.toDataURL())
+    const [p, _] = await inferenceModel(result.canvas!.toDataURL())
     //console.timeEnd('Inference time');
 
     let tempRes: [[string, number]] = [[capWords(p[0].name), 1]]
@@ -80,7 +80,7 @@ onMounted(() => {
   if (cropperRef.value) {
     //preview coordinates
     const multiplier = 0.84
-    cropperRef.value.setCoordinates(({ coordinates, imageSize }) => ({
+    cropperRef.value.setCoordinates(({ imageSize }) => ({
       left: imageSize.width/2 - imageSize.height * multiplier / 2,
       top: imageSize.height/2 - imageSize.height * multiplier / 2,
       width: imageSize.height * multiplier,
