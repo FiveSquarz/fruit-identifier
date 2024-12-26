@@ -12,7 +12,7 @@ export async function inferenceModel(path: string): Promise<[any, number]> {
 }
 
 async function createSession(onnxPath: string) : Promise<ort.InferenceSession> {
-  ort.env.wasm.wasmPaths = '/wasm/';
+  ort.env.wasm.wasmPaths = "/fruit-identifier/wasm/";
   const session = await ort.InferenceSession.create(
     onnxPath, { executionProviders: ['wasm'], graphOptimizationLevel: 'all' }
   );
